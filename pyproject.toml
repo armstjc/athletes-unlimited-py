@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools","wheel","pyarrow","pandas","tqdm","requests","lxml"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "athletes_unlimited_py"
+version = "0.0.1a1"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+authors = [
+    {name = "Joseph Armstrong", email="armstrongjoseph08@gmail.com"}
+]
+
+maintainers = [
+    {name = "Joseph Armstrong", email="armstrongjoseph08@gmail.com"}
+]
+
+description = "Python package for the Athletes Unlimited sports organization, and for the various sports it hosts."
+
+keywords = ['sports','women_in_sports','women','girl_sports','basketball','womens_basketball','volleyball','womens_volleyball','lacrosse','womens_lacrosse','softball','womens_softball','aux_softball','womens_aux_softball']
+
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.10'
+]
+
+dependencies = [
+    "setuptools>=67.6.0",
+    "wheel",
+    "pyarrow>=11.0.0",
+    "pandas>=1.5.3",
+    "tqdm",
+    "requests",
+    "lxml"
+]
+
+[project.urls]
+homepage = "https://github.com/armstjc/athletes-unlimited-py"
+documentation = "https://github.com/armstjc/athletes-unlimited-py/wiki"
+repository = "https://github.com/armstjc/athletes-unlimited-py.git"
+changelog = "https://github.com/armstjc/athletes-unlimited-py/CHANGELOG.md"
