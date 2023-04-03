@@ -1,5 +1,7 @@
 # athletes-unlimited-py
-Python package for the Athletes Unlimited sports organization. 
+
+Python package for the Athletes Unlimited sports organization, and for the various sports it hosts.
+
 ## How to install
 
 `xflFastR-py` can be installed from this GitHub repository with the following command through pip:
