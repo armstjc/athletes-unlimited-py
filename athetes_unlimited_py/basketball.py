@@ -94,12 +94,12 @@ def get_au_basketball_game_stats(season:int,game_num:int,get_team_stats=False,ge
     `rename_cols` (bool, optional) = False:
         NOT IMPLEMENTED YET!
         `get_basketball_game_stats()` will have no change in functionality at this time if `rename_cols` is set to `True`.
+        
 
     Returns
     ----------
     A pandas DataFrame containing player and/or team stats for a given AU game within a given AU season.
     """
-    #
 
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
     player_stats_df = pd.DataFrame()
@@ -124,7 +124,7 @@ def get_au_basketball_game_stats(season:int,game_num:int,get_team_stats=False,ge
     sport = json_data['metaSport']['sport']
     api_version = json_data['metaSport']['version']
 
-    for i in json_data['data']:
+    for i in tqdm(json_data['data']):
         #print(i)
         row_df = pd.DataFrame({'sport':sport,'api_version':api_version},index=[0])
         row_df['type'] = i['type']
@@ -139,17 +139,17 @@ def get_au_basketball_game_stats(season:int,game_num:int,get_team_stats=False,ge
         ## Player/Team info
         ##############################################################################################################################
         row_df['season'] = get_au_basketball_season(i['seasonId'])
-        row_df['seasonId'] = i['seasonId']
-        row_df['weekNumber'] = i['stats'][0]['weekNumber']
-        row_df['gameNumber'] = i['stats'][0]['gameNumber']
-        row_df['seasonType'] = i['stats'][0]['seasonType']
+        row_df['season_id'] = i['seasonId']
+        row_df['week_number'] = i['stats'][0]['weekNumber']
+        row_df['game_number'] = i['stats'][0]['gameNumber']
+        row_df['season_type'] = i['stats'][0]['seasonType']
 
-        row_df['playerId'] = i['playerId']
-        row_df['uniformNumber'] = i['uniformNumber']
-        row_df['uniformNumberDisplay'] = str(i['uniformNumberDisplay'])
+        row_df['player_id'] = i['playerId']
+        row_df['uniform_number'] = i['uniformNumber']
+        row_df['uniform_number_display'] = str(i['uniformNumberDisplay'])
         
-        row_df['primaryPositionLk'] = i['primaryPositionLk']
-        row_df['secondaryPositionLk'] = i['secondaryPositionLk']
+        row_df['primary_position_lk'] = i['primaryPositionLk']
+        row_df['secondary_position_lk'] = i['secondaryPositionLk']
         row_df['first_name'] = str(i['firstName']).replace('\u2019','\'')
         row_df['last_name'] = str(i['lastName']).replace('\u2019','\'')
         row_df['full_name'] = f"{i['firstName']} {i['lastName']}".replace('\u2019','\'')
@@ -262,7 +262,6 @@ def get_au_basketball_pbp(season:int,game_id:int,return_participation_data=False
     season_id = get_au_basketball_season_id(season)
 
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
-    season_pbp_df = pd.DataFrame()
     game_pbp_df = pd.DataFrame()
     roster_df = pd.DataFrame()
     row_df = pd.DataFrame()
@@ -281,21 +280,20 @@ def get_au_basketball_pbp(season:int,game_id:int,return_participation_data=False
     json_data = json.loads(response.text)
     time.sleep(0.5)
 
-    for i in json_data['data'][0]['plays']:
+    for i in tqdm(json_data['data'][0]['plays']):
         row_df = pd.DataFrame({'season':season,'game_id':game_id},index=[0])
-        row_df['gameNumber'] = i['gameNumber']
-        row_df['playSeqno'] = i['playSeqno']
+        row_df['game_number'] = i['gameNumber']
+        row_df['play_seq_num'] = i['playSeqno']
         row_df['narrative'] = i['narrative']
-        row_df['narrativeFormatted'] = i['narrativeFormatted']
-        row_df['homeTeamId'] = i['homeTeamId']
-        row_df['homeTeamScore'] = i['homeTeamScore']
-        row_df['awayTeamId'] = i['awayTeamId']
-        row_df['awayTeamScore'] = i['awayTeamScore']
-        row_df['isAPlay'] = i['isAPlay']
-        row_df['generatesPointAuditFlg'] = i['generatesPointAuditFlg']
-        row_df['hasError'] = i['hasError']
-        row_df['playerId'] = i['playerId']
-        row_df['teamId'] = i['teamId']
+        row_df['home_team_id'] = i['homeTeamId']
+        row_df['home_team_score'] = i['homeTeamScore']
+        row_df['away_team_id'] = i['awayTeamId']
+        row_df['away_team_score'] = i['awayTeamScore']
+        row_df['is_a_play'] = i['isAPlay']
+        row_df['generates_point_audit_flag'] = i['generatesPointAuditFlg']
+        row_df['has_error'] = i['hasError']
+        row_df['player_id'] = i['playerId']
+        row_df['team_id'] = i['teamId']
         row_df['action'] = i['action']
         row_df['type'] = i['type']
         row_df['quarter'] = i['quarter']
@@ -306,34 +304,34 @@ def get_au_basketball_pbp(season:int,game_id:int,return_participation_data=False
         row_df['turnover'] = i['turnover']
         row_df['jumper'] = i['jumper']
         row_df['dunk'] = i['dunk']
-        row_df['tipIn'] = i['tipIn']
+        row_df['tip_in'] = i['tipIn']
         row_df['timeout'] = i['timeout']
-        row_df['inThePaint'] = i['inThePaint']
-        row_df['onFastBreak'] = i['onFastBreak']
-        row_df['missedThreePointer'] = i['missedThreePointer']
-        row_df['madeThreePointer'] = i['madeThreePointer']
-        row_df['missedTwoPointer'] = i['missedTwoPointer']
-        row_df['madeTwoPointer'] = i['madeTwoPointer']
-        row_df['missedFreeThrow'] = i['missedFreeThrow']
-        row_df['madeFreeThrow'] = i['madeFreeThrow']
-        row_df['offensiveRebound'] = i['offensiveRebound']
-        row_df['defensiveRebound'] = i['defensiveRebound']
-        row_df['shootingFoulCommitted'] = i['shootingFoulCommitted']
-        row_df['shootingFoulDrawn'] = i['shootingFoulDrawn']
-        row_df['shootingFoulDrawnByPlayerId'] = i['shootingFoulDrawnByPlayerId']
-        row_df['personalFoulCommitted'] = i['personalFoulCommitted']
-        row_df['personalFoulDrawn'] = i['personalFoulDrawn']
-        row_df['personalFoulDrawnByPlayerId'] = i['personalFoulDrawnByPlayerId']
-        row_df['offensiveFoulCommitted'] = i['offensiveFoulCommitted']
-        row_df['offensiveFoulDrawn'] = i['offensiveFoulDrawn']
-        row_df['offensiveFoulDrawnByPlayerId'] = i['offensiveFoulDrawnByPlayerId']
-        row_df['otherFoulCommitted'] = i['otherFoulCommitted']
-        row_df['otherFoulDrawn'] = i['otherFoulDrawn']
-        row_df['otherFoulDrawnByPlayerId'] = i['otherFoulDrawnByPlayerId']
-        row_df['scoringPlay'] = i['scoringPlay']
+        row_df['in_the_paint'] = i['inThePaint']
+        row_df['on_fast_break'] = i['onFastBreak']
+        row_df['missed_three_pointer'] = i['missedThreePointer']
+        row_df['made_three_pointer'] = i['madeThreePointer']
+        row_df['missed_two_pointer'] = i['missedTwoPointer']
+        row_df['made_two_pointer'] = i['madeTwoPointer']
+        row_df['missed_free_throw'] = i['missedFreeThrow']
+        row_df['made_free_throw'] = i['madeFreeThrow']
+        row_df['offensive_rebound'] = i['offensiveRebound']
+        row_df['defensive_rebound'] = i['defensiveRebound']
+        row_df['shooting_foul_committed'] = i['shootingFoulCommitted']
+        row_df['shooting_foul_drawn'] = i['shootingFoulDrawn']
+        row_df['shooting_foul_drawn_by_player_id'] = i['shootingFoulDrawnByPlayerId']
+        row_df['personal_foul_committed'] = i['personalFoulCommitted']
+        row_df['personal_foul_drawn'] = i['personalFoulDrawn']
+        row_df['personal_foul_drawn_by_player_id'] = i['personalFoulDrawnByPlayerId']
+        row_df['offensive_foul_committed'] = i['offensiveFoulCommitted']
+        row_df['offensive_foul_drawn'] = i['offensiveFoulDrawn']
+        row_df['offensive_foul_drawn_by_player_id'] = i['offensiveFoulDrawnByPlayerId']
+        row_df['other_foul_committed'] = i['otherFoulCommitted']
+        row_df['other_foul_drawn'] = i['otherFoulDrawn']
+        row_df['other_foul_drawn_by_player_id'] = i['otherFoulDrawnByPlayerId']
+        row_df['scoring_play'] = i['scoringPlay']
 
 
-        season_pbp_df = pd.concat([season_pbp_df,row_df])
+        game_pbp_df = pd.concat([game_pbp_df,row_df])
         del row_df
     
     if return_participation_data == True:
@@ -355,41 +353,40 @@ def get_au_basketball_pbp(season:int,game_id:int,return_participation_data=False
                     index=[0]
                 )
 
-                row_df['competitorId'] = j['competitorId']
-                row_df['playerId'] = j['playerId']
-                row_df['captainFlg'] = j['captainFlg']
-                row_df['displayName'] = j['displayName']
-                row_df['firstName'] = j['firstName']
-                row_df['lastName'] = j['lastName']
-                row_df['currentRosterStatus_description'] = j['currentRosterStatus']['description']
-                row_df['currentRosterStatus_comments'] = j['currentRosterStatus']['comments']
-                row_df['currentRosterStatus_transactionType'] = j['currentRosterStatus']['transactionType']
-                row_df['currentRosterStatus_rosterStatusLk'] = j['currentRosterStatus']['rosterStatusLk']
-                row_df['isVotingFlg'] = j['isVotingFlg']
-                row_df['canBeVotedForFlg'] = j['canBeVotedForFlg']
-                row_df['hasVotedFlg'] = j['hasVotedFlg']
-                row_df['uniformNumber'] = str(j['uniformNumber'])
-                row_df['isNominatedFlg'] = j['isNominatedFlg']
-                row_df['nominatedFlg'] = j['nominatedFlg']
-                row_df['resourceUrl'] = j['resourceUrl']
-                row_df['imageUrl'] = j['imageResource']['imageUrl']
+                row_df['competitor_id'] = j['competitorId']
+                row_df['player_id'] = j['playerId']
+                row_df['captain_flag'] = j['captainFlg']
+                row_df['display_name'] = j['displayName']
+                row_df['first_name'] = j['firstName']
+                row_df['last_name'] = j['lastName']
+                row_df['current_roster_status_description'] = j['currentRosterStatus']['description']
+                row_df['current_rosterStatus_comments'] = j['currentRosterStatus']['comments']
+                row_df['current_rosterStatus_transactionType'] = j['currentRosterStatus']['transactionType']
+                row_df['current_rosterStatus_rosterStatusLk'] = j['currentRosterStatus']['rosterStatusLk']
+                row_df['is_voting_flg'] = j['isVotingFlg']
+                row_df['can_be_voted_for_flg'] = j['canBeVotedForFlg']
+                row_df['has_voted_flag'] = j['hasVotedFlg']
+                row_df['uniform_number'] = str(j['uniformNumber'])
+                row_df['is_nominated_flag'] = j['isNominatedFlg']
+                row_df['nominated_flag'] = j['nominatedFlg']
+                row_df['player_url'] = j['resourceUrl']
+                row_df['image_url'] = j['imageResource']['imageUrl']
 
                 roster_df = pd.concat([roster_df,row_df],ignore_index=True)
             del row_df
 
         del json_data
-        return season_pbp_df,roster_df
+        return game_pbp_df,roster_df
     
     else:
         del json_data, roster_df
-        return season_pbp_df
+        return game_pbp_df
 
 ############################################################################################################################################################################################################################################################
 ##
 ## Season Functions
 ##
 ############################################################################################################################################################################################################################################################
-
 
 def get_au_basketball_season_pbp(season:int) -> pd.DataFrame():
     """
@@ -413,7 +410,7 @@ def get_au_basketball_season_pbp(season:int) -> pd.DataFrame():
     response = requests.get(url,headers=headers)
     sport_json_data = json.loads(response.text)
     
-    for i in sport_json_data['data']:
+    for i in tqdm(sport_json_data['data']):
         #print(i)
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
@@ -456,7 +453,7 @@ def get_au_basketball_season_player_box(season:int) -> pd.DataFrame():
     response = requests.get(url,headers=headers)
     sport_json_data = json.loads(response.text)
     
-    for i in sport_json_data['data']:
+    for i in tqdm(sport_json_data['data']):
         #print(i)
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
@@ -499,7 +496,7 @@ def get_au_basketball_season_team_box(season:int) -> pd.DataFrame():
     response = requests.get(url,headers=headers)
     sport_json_data = json.loads(response.text)
     
-    for i in sport_json_data['data']:
+    for i in tqdm(sport_json_data['data']):
         #print(i)
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
