@@ -1,5 +1,16 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.1a4 - The Lacrosse Update
+
+- Implemented `get_au_lacrosse_season()`, to allow a developer and/or function to get the coresponding season for a given AU lacrosse season ID.
+- Implemented `get_au_lacrosse_season_id()` to allow a developer and/or function to get a proper AU season ID for a given AU lacrosse season.
+- Implemented `get_au_lacrosse_game_stats()`, a function that allows one to get the player and/or team box score stats for a game within a Athletes Unlimited (AU) lacrosse season.
+- Implemented `get_au_lacrosse_pbp()`, a function that allows one to get all play-by-play (PBP) data from a given AU lacrosse game.
+- Implemented `get_au_lacrosse_season_player_box()`, a function that works in tandem with `get_au_lacrosse_game_stats()` to get all player box stats in a AU lacrosse season.
+- Implemented `get_au_lacrosse_season_team_box()`, a function that works in tandem with `get_au_lacrosse_game_stats()` to get all team box stats in a AU lacrosse season.
+- Implemented `get_au_lacrosse_season_pbp()`, a function that works in tandem with `get_au_lacrosse_pbp()` to get all PBP data within a given AU lacrosse season.
+- Updated package version to `0.0.1a4`.
+
 ## 0.0.1a3 - The AUX Softball Update
 
 - Implemented `get_aux_softball_season_id()` to allow a developer and/or function to get a proper Athletes Unlimited X (AUX) season ID for a given AUX softball season.
