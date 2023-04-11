@@ -1,5 +1,16 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.1a3 - The AUX Softball Update
+
+- Implemented `get_aux_softball_season_id()` to allow a developer and/or function to get a proper Athletes Unlimited X (AUX) season ID for a given AUX softball season.
+- Implemented `get_aux_softball_season_pbp()`, a function that works in tandem with `get_au_softball_pbp()` to get all PBP data within a given AUX softball season.
+- Implemented `get_aux_softball_season_player_box()`, a function that works in tandem with `get_au_softball_game_stats()` to get all player box stats in a AUX softball season.
+- Implemented `get_aux_softball_season_team_box()`, a function that works in tandem with `get_au_softball_game_stats()` to get all team box stats in a AUX softball season.
+- Reworked `get_au_softball_season()` to work with AUX Softball season IDs.
+- Reworked `get_au_softball_game_stats()` to take `season_id` as a required input, instead of a `season`.
+- Reworked `get_au_softball_pbp()` to take `season_id` as a required input, instead of a `season`.
+- Updated package version to `0.0.1a3`.
+
 ## 0.0.1a2 - The Softball Update
 
 - Updated column names for both pandas DataFrames returned by `get_au_basketball_pbp()`.

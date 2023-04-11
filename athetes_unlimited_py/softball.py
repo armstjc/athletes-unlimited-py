@@ -38,8 +38,14 @@ def get_au_softball_season(season_id:int) -> int:
         return season 
     elif season_id == 13: # AUX = 39, non-AUX = 13
         season = 2022
-        return season 
+        return season
+    elif season_id == 39:
+        season = 2022
+        return season
     elif season_id == 14: # AUX = 106, non-AUX = 14
+        season = 2023
+        return season 
+    elif season_id == 106:
         season = 2023
         return season 
     else:
@@ -82,14 +88,14 @@ def get_au_softball_season_id(season:int) -> int:
 ##
 ############################################################################################################################################################################################################################################################
 
-def get_au_softball_game_stats(season:int,game_num:int,get_team_stats=False,get_player_and_team_stats=False,rename_cols=False) -> pd.DataFrame():
+def get_au_softball_game_stats(season_id:int,game_num:int,get_team_stats=False,get_player_and_team_stats=False,rename_cols=False) -> pd.DataFrame():
     """
     Retrieves the player and/or team game stats for an Atheltes Unlimited (AU) softball game.
 
     Parameters
     ----------
-    `season` (int, mandatory):
-        The AU softball season you want a game from.
+    `season_id` (int, mandatory):
+        The AU softball season ID you want a game from.
     
     `game_num` (int, mandatory):
         The game number you want player and/or team stats from.
@@ -110,7 +116,7 @@ def get_au_softball_game_stats(season:int,game_num:int,get_team_stats=False,get_
 
     Returns
     ----------
-    A pandas DataFrame containing player and/or team stats for a given AU game within a given AU season.
+    A pandas DataFrame containing player and/or team stats for a given AU game within a given AU season ID.
     """
 
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
@@ -118,8 +124,9 @@ def get_au_softball_game_stats(season:int,game_num:int,get_team_stats=False,get_
     team_stats_df = pd.DataFrame()
     row_df = pd.DataFrame()
     
-    season_id = get_au_softball_season_id(season)
-    
+    # season_id = get_au_softball_season_id(season)
+    # season = get_au_softball_season(season_id)
+
     if game_num < 1:
         raise ValueError('`game_num` cannot be less than 0.')
     
@@ -352,14 +359,14 @@ def get_au_softball_game_stats(season:int,game_num:int,get_team_stats=False,get_
         del team_stats_df
         return player_stats_df
 
-def get_au_softball_pbp(season:int,game_id:int,return_participation_data=False):
+def get_au_softball_pbp(season_id:int,game_id:int,return_participation_data=False) -> pd.DataFrame():
     """
     Retrieves the play-by-play (PBP) data for an Atheltes Unlimited (AU) softball game.
 
     Parameters
     ----------
-    `season` (int, mandatory):
-        The AU softball season you want a game from.
+    `season_id` (int, mandatory):
+        The AU softball season ID you want a game from.
     
     `game_id` (int, mandatory):
         The AU softball game ID you want PBP data from.
@@ -371,11 +378,12 @@ def get_au_softball_pbp(season:int,game_id:int,return_participation_data=False):
 
     Returns
     ----------
-    A pandas DataFrame containing PBP data for a given AU game ID within a given AU season.
+    A pandas DataFrame containing PBP data for a given AU game ID within a given AU season ID.
     If `return_participation_data` is set to `True`, an additional pandas DataFrame containing roster data for this game will be returned as well.
     """
 
-    season_id = get_au_softball_season_id(season)
+    # season_id = get_au_softball_season_id(season)
+    season = get_au_softball_season(season_id)
 
     headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
     game_pbp_df = pd.DataFrame()
@@ -391,9 +399,10 @@ def get_au_softball_pbp(season:int,game_id:int,return_participation_data=False):
     response = requests.get(url,headers=headers)
     raise_html_status_code(response.status_code)
     
-    del headers, key
 
     json_data = json.loads(response.text)
+
+    del headers, key
 
     for i in json_data['data'][0]['plays']:
         row_df = pd.DataFrame({'season':season,'game_id':game_id},index=[0])
