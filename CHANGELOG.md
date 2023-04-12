@@ -1,5 +1,10 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.1 - The "We're in beta" Update
+
+- Updated `README.md` to show how to install `athletes-unlimited-py` through the `pip` Python package manager.
+- Updated package version to `0.0.1`.
+
 ## 0.0.1a5 - The Volleyball Update
 
 - Implemented `get_au_volleyball_season()`, to allow a developer and/or function to get the coresponding season for a given AU volleyball season ID.
