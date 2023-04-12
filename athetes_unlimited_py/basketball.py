@@ -124,6 +124,7 @@ def get_au_basketball_game_stats(season:int,game_num:int,get_team_stats=False,ge
     sport = json_data['metaSport']['sport']
     api_version = json_data['metaSport']['version']
 
+    print(f'\nOn game #{game_num} in the {season} AU Basketball season.')
     for i in tqdm(json_data['data']):
         #print(i)
         row_df = pd.DataFrame({'sport':sport,'api_version':api_version},index=[0])
@@ -453,20 +454,20 @@ def get_au_basketball_season_player_box(season:int) -> pd.DataFrame():
     response = requests.get(url,headers=headers)
     sport_json_data = json.loads(response.text)
     
-    for i in tqdm(sport_json_data['data']):
+    for i in sport_json_data['data']:
         #print(i)
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
 
-            for j in len_game_ids:
-                print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
+            for j in tqdm(range(1,len_game_ids+1)):
+                # print(f'\nOn game ID {j} for the {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
                 # except:
                 #     print(f'Couldn\'t parse game stats for game #{j}.')
                 #     time.sleep(10)
 
-                game_df = get_au_basketball_pbp(season,j)
+                game_df = get_au_basketball_game_stats(season,j)
 
                 season_stats_df = pd.concat([season_stats_df,game_df],ignore_index=True)
                 del game_df
@@ -502,7 +503,7 @@ def get_au_basketball_season_team_box(season:int) -> pd.DataFrame():
             len_game_ids = len(i['gameIds'])
 
             for j in tqdm(range(1,len_game_ids+1)):
-                print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
+                # print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
                 # except:

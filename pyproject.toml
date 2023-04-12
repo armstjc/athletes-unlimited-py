@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "athletes_unlimited_py"
-version = "0.0.1a4"
+version = "0.0.1a5"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -41,4 +41,4 @@ dependencies = [
 homepage = "https://github.com/armstjc/athletes-unlimited-py"
 documentation = "https://github.com/armstjc/athletes-unlimited-py/wiki"
 repository = "https://github.com/armstjc/athletes-unlimited-py.git"
-changelog = "https://github.com/armstjc/athletes-unlimited-py/CHANGELOG.md"
+changelog = "https://github.com/armstjc/athletes-unlimited-py/blob/main/CHANGELOG.md"

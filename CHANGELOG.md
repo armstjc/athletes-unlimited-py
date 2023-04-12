@@ -1,5 +1,19 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.1a5 - The Volleyball Update
+
+- Implemented `get_au_volleyball_season()`, to allow a developer and/or function to get the coresponding season for a given AU volleyball season ID.
+- Implemented `get_au_volleyball_season_id()` to allow a developer and/or function to get a proper AU season ID for a given AU volleyball season.
+- Implemented `get_au_volleyball_game_stats()`, a function that allows one to get the player and/or team box score stats for a game within a Athletes Unlimited (AU) volleyball season.
+- Implemented `get_au_volleyball_pbp()`, a function that allows one to get all play-by-play (PBP) data from a given AU volleyball game.
+- Implemented `get_au_volleyball_season_player_box()`, a function that works in tandem with `get_au_volleyball_game_stats()` to get all player box stats in a AU volleyball season.
+- Implemented `get_au_volleyball_season_team_box()`, a function that works in tandem with `get_au_volleyball_game_stats()` to get all team box stats in a AU volleyball season.
+- Implemented `get_au_volleyball_season_pbp()`, a function that works in tandem with `get_au_volleyball_pbp()` to get all PBP data within a given AU volleyball season.
+- Fixed numerous bugs within `get_au_basketball_season_player_box()` that would result in an empty pandas DataFrame to be returned.
+- Fixed a spelling error in README.md where a line refered to a completely seperate python package, rather than `athletes-unlimited-py`.
+- Fixed the link to the Change Log of this package in `pyproject.toml`.
+- Updated package version to `0.0.1a5`.
+
 ## 0.0.1a4 - The Lacrosse Update
 
 - Implemented `get_au_lacrosse_season()`, to allow a developer and/or function to get the coresponding season for a given AU lacrosse season ID.

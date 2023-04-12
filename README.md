@@ -4,7 +4,7 @@ Python package for the Athletes Unlimited sports organization, and for the vario
 
 ## How to install
 
-`xflFastR-py` can be installed from this GitHub repository with the following command through pip:
+`athletes-unlimited-py` can be installed from this GitHub repository with the following command through pip:
 
 ```
 pip install git+https://github.com/armstjc/athletes-unlimited-py
