@@ -416,7 +416,7 @@ def get_au_basketball_season_pbp(season:int) -> pd.DataFrame():
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
 
-            for j in tqdm(range(1,len_game_ids+1)):
+            for j in tqdm(i['gameIds']):
                 print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
@@ -424,7 +424,7 @@ def get_au_basketball_season_pbp(season:int) -> pd.DataFrame():
                 #     print(f'Couldn\'t parse game stats for game #{j}.')
                 #     time.sleep(10)
 
-                game_df = get_au_basketball_game_stats(season,j,get_team_stats=True)
+                game_df = get_au_basketball_pbp(season,j)
 
                 season_pbp_df = pd.concat([season_pbp_df,game_df],ignore_index=True)
                 del game_df

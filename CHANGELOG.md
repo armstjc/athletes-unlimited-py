@@ -1,5 +1,24 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.2 The "Softball season stats" Update
+
+- Implemented `get_au_softball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) softball season.
+- Implemented `get_au_softball_season_player_stats()`, a function that returns the season stats of teams given a valid AU softball season.
+- Implemented `get_aux_softball_season_player_stats()`, a function that returns the season stats of players given a valid AUX softball season.
+- Implemented `get_aux_softball_season_player_stats()`, a function that returns the season stats of teams given a valid AUX softball season.
+- Fixed a bug in `get_au_softball_season_team_box()` that would cause the function to error out because of a mispelled variable name.
+- Fixed a bug in `get_au_softball_season_player_box()` that would cause the function to error out because of an incorect implementation of a loop.
+- Fixed a bug in `get_au_softball_season_player_box()` that would fetch play-by-play data data instead of box scores data.
+- Fixed a bug in `get_au_softball_season_pbp()` that would cause the function to error out because of an incorect implementation of a loop.
+- Fixed a bug in `get_au_softball_season_pbp()` that would fetch box scores data instead of play-by-play data.
+- Added multiple sabermetric stats to softball.
+- Fixed a bug in `get_au_softball_game_stats()` which would not return the team the player was competing for.
+- Fixed a bug in `get_au_softball_game_stats()` which would cause the function to error out due to the way ceritan games record innings pitched for players who have an infinate ERA.
+- Fixed a bug in `get_au_softball_season()` that would cause the function to error out unexpectedly due to a scope error in the `season` variable
+- Fixed a bug in `get_aux_softball_season_player_box()` and `get_aux_softball_season_team_box()` where the `[sport]` column in the returned pandas DataFrame would indicate the sport as `softball` instead of `aux_softball`.
+- Fixed a bug in `get_au_basketball_season_pbp()` that would cause the function to fetch box score stats instead of play-by-play data.
+- Updated package version to `0.0.2`.
+
 ## 0.0.1 - The "We're in beta" Update
 
 - Updated `README.md` to show how to install `athletes-unlimited-py` through the `pip` Python package manager.
