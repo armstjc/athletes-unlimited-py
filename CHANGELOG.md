@@ -1,5 +1,11 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.3 The "Basketball season stats" Update
+
+- Implemented `get_au_basketball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) basketball season.
+- Implemented `get_au_basketball_season_player_stats()`, a function that returns the season stats of teams given a valid AU basketball season.
+- Updated package version to `0.0.3`.
+
 ## 0.0.2 The "Softball season stats" Update
 
 - Implemented `get_au_softball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) softball season.
