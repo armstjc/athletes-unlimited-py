@@ -1,5 +1,11 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.4 The "Lacrosse season stats" Update
+
+- Implemented `get_au_lacrosse_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) lacrosse season.
+- Implemented `get_au_lacrosse_season_player_stats()`, a function that returns the season stats of teams given a valid AU lacrosse season.
+- Updated package version to `0.0.4`.
+
 ## 0.0.3 The "Basketball season stats" Update
 
 - Implemented `get_au_basketball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) basketball season.
