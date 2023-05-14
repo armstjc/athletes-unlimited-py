@@ -438,7 +438,7 @@ def get_au_basketball_season_pbp(season: int) -> pd.DataFrame():
             len_game_ids = len(i['gameIds'])
 
             for j in tqdm(i['gameIds']):
-                print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
+                print(f'\nOn game {j} of {len_game_ids} for {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
                 # except:
@@ -483,7 +483,7 @@ def get_au_basketball_season_player_box(season: int) -> pd.DataFrame():
         if i['seasonId'] == seasonId:
             len_game_ids = len(i['gameIds'])
 
-            for j in tqdm(range(1, len_game_ids+1)):
+            for j in tqdm(range(1, len_game_ids)):
                 # print(f'\nOn game ID {j} for the {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
@@ -530,7 +530,7 @@ def get_au_basketball_season_team_box(season: int) -> pd.DataFrame():
             len_game_ids = len(i['gameIds'])
 
             for j in tqdm(range(1, len_game_ids+1)):
-                # print(f'\nOn game {j} of {len_game_ids+1} for {season}.')
+                print(f'\nOn game {j} of {len_game_ids} for {season}.')
                 # try:
                 #     game_df = get_basketball_game_stats(season,j)
                 # except:
