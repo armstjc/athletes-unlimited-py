@@ -1,5 +1,14 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.5 The "Volleyball season stats" Update
+
+- Implemented `get_au_volleyball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) volleyball season.
+- Implemented `get_au_volleyball_season_player_stats()`, a function that returns the season stats of teams given a valid AU volleyball season.
+- Fixed a bug in multiple functions where the function would overestimate the number of games in a season.
+- Fixed a spelling error found within the function names `get_au_lacrosse_season_player_stats()` and `get_au_lacrosse_season_player_stats()`.
+- Fixed a bug in `get_au_volleyball_game_stats()` where three columns would be near-duplicates.
+- Updated package version to `0.0.5`.
+
 ## 0.0.4 The "Lacrosse season stats" Update
 
 - Implemented `get_au_lacrosse_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) lacrosse season.
