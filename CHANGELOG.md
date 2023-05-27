@@ -1,5 +1,10 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.6a1 The "AUX minor fixes" Update
+
+- Fixed a bug in `get_aux_softball_season_player_stats()` and `get_aux_softball_season_team_stats()` which would cause an unhandled exception to be raised when there are no stats in a inputed season, and the season inputed has a valid season ID.
+- Updated package version to `0.0.6a1`.
+
 ## 0.0.6 The "Bug Fixes" Update
 
 - Fixed a bug in `get_au_lacrosse_season_pbp()` where the notification on which game the function is downloading would be inaccurate.
