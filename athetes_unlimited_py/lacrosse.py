@@ -419,10 +419,11 @@ def get_au_lacrosse_season_pbp(season: int) -> pd.DataFrame():
     for i in sport_json_data['data']:
         # print(i)
         if i['seasonId'] == season_id:
-            # len_game_ids = len(i['gameIds'])
-
+            len_game_ids = len(i['gameIds'])
+            count = 0
             for j in tqdm(i['gameIds']):
-                print(f'\nOn game ID {j} in {season}.')
+                count += 1
+                print(f'\nOn game ID {count} of {len_game_ids} in {season}.')
                 # try:
                 #     game_df = get_lacrosse_game_stats(season,j)
                 # except:
@@ -565,30 +566,21 @@ def get_au_lacrosse_season_player_stats(season: int) -> pd.DataFrame():
     #    'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
     #    'goalie_shotClockViolationsDrawn']
     game_stats_df['G'] = 1
+    if len(game_stats_df) > 0:
+        finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'playerId',
+                                             'first_name', 'last_name', 'full_name'], as_index=False)[[
+                                                 'G', 'periodsPlayed',
+                                                 'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
+                                                 'groundballs', 'twoPointGoals', 'drawControls',
+                                                 'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
+                                                 'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
+                                                 'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
+                                                 'goalie_goalsAgainst', 'goalie_saves',
+                                                 'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
+                                                 'goalie_shotClockViolationsDrawn'
+                                             ]].sum()
 
-    finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'playerId',
-                                         'first_name', 'last_name', 'full_name'], as_index=False)[[
-                                             'G', 'periodsPlayed',
-                                             'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
-                                             'groundballs', 'twoPointGoals', 'drawControls',
-                                             'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
-                                             'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
-                                             'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
-                                             'goalie_goalsAgainst', 'goalie_saves',
-                                             'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-                                             'goalie_shotClockViolationsDrawn'
-                                         ]].sum()
-
-    finished_df[['G', 'periodsPlayed',
-                 'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
-                 'groundballs', 'twoPointGoals', 'drawControls',
-                 'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
-                 'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
-                 'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
-                 'goalie_goalsAgainst', 'goalie_saves',
-                 'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-                 'goalie_shotClockViolationsDrawn']] = finished_df[[
-                     'G', 'periodsPlayed',
+        finished_df[['G', 'periodsPlayed',
                      'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
                      'groundballs', 'twoPointGoals', 'drawControls',
                      'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
@@ -596,19 +588,33 @@ def get_au_lacrosse_season_player_stats(season: int) -> pd.DataFrame():
                      'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
                      'goalie_goalsAgainst', 'goalie_saves',
                      'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-                     'goalie_shotClockViolationsDrawn']].astype('int')
+                     'goalie_shotClockViolationsDrawn']] = finished_df[[
+                         'G', 'periodsPlayed',
+                         'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
+                         'groundballs', 'twoPointGoals', 'drawControls',
+                         'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
+                         'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
+                         'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
+                         'goalie_goalsAgainst', 'goalie_saves',
+                         'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
+                         'goalie_shotClockViolationsDrawn']].astype('int')
 
-    finished_df['shotPct'] = finished_df['goals'] / finished_df['shots']
-    finished_df['shotPct'] = finished_df['shotPct'].round(3)
+        finished_df['shotPct'] = finished_df['goals'] / finished_df['shots']
+        finished_df['shotPct'] = finished_df['shotPct'].round(3)
 
-    finished_df['sogPct'] = finished_df['shotsOnGoal'] / finished_df['shots']
-    finished_df['sogPct'] = finished_df['sogPct'].round(3)
+        finished_df['sogPct'] = finished_df['shotsOnGoal'] / \
+            finished_df['shots']
+        finished_df['sogPct'] = finished_df['sogPct'].round(3)
 
-    finished_df['goalie_savePct'] = finished_df['goalie_goalsAgainst'] / \
-        finished_df['goalie_shotsFaced']
-    finished_df['goalie_savePct'] = finished_df['goalie_savePct'].round(3)
+        finished_df['goalie_savePct'] = finished_df['goalie_goalsAgainst'] / \
+            finished_df['goalie_shotsFaced']
+        finished_df['goalie_savePct'] = finished_df['goalie_savePct'].round(3)
 
-    return finished_df
+        return finished_df
+
+    else:
+        print(f'No lacrosse stats found in {season}.')
+        return pd.DataFrame()
 
 
 def get_au_lacrosse_season_team_stats(season: int) -> pd.DataFrame():
@@ -640,45 +646,50 @@ def get_au_lacrosse_season_team_stats(season: int) -> pd.DataFrame():
     #    'goalie_shotClockViolationsDrawn']
     game_stats_df['G'] = 1
 
-    finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'teamId'], as_index=False)[[
-        'G', 'periodsPlayed',
-        'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
-        'groundballs', 'twoPointGoals', 'drawControls',
-        'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
-        'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
-        'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
-        'goalie_goalsAgainst', 'goalie_saves',
-        'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-        'goalie_shotClockViolationsDrawn'
-    ]].sum()
+    if len(game_stats_df) > 0:
+        finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'teamId'], as_index=False)[[
+            'G', 'periodsPlayed',
+            'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
+            'groundballs', 'twoPointGoals', 'drawControls',
+            'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
+            'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
+            'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
+            'goalie_goalsAgainst', 'goalie_saves',
+            'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
+            'goalie_shotClockViolationsDrawn'
+        ]].sum()
 
-    finished_df[['G', 'periodsPlayed',
-                 'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
-                 'groundballs', 'twoPointGoals', 'drawControls',
-                 'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
-                 'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
-                 'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
-                 'goalie_goalsAgainst', 'goalie_saves',
-                 'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-                 'goalie_shotClockViolationsDrawn']] = finished_df[[
-                     'G', 'periodsPlayed',
-                     'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
+        finished_df[['G', 'periodsPlayed',
+                    'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
                      'groundballs', 'twoPointGoals', 'drawControls',
                      'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
                      'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
                      'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
                      'goalie_goalsAgainst', 'goalie_saves',
                      'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
-                     'goalie_shotClockViolationsDrawn']].astype('int')
+                     'goalie_shotClockViolationsDrawn']] = finished_df[[
+                         'G', 'periodsPlayed',
+                         'goals', 'assists', 'points', 'shots', 'turnovers', 'causedTurnovers',
+                         'groundballs', 'twoPointGoals', 'drawControls',
+                         'shotsSaved', 'shotsOnGoal', 'yellowCards', 'redCards',
+                         'shotClockViolationsCommitted', 'shotClockViolationsDrawn',
+                         'auTotalPoints', 'goalie_gamesPlayed', 'goalie_gamesStarted',
+                         'goalie_goalsAgainst', 'goalie_saves',
+                         'goalie_shotsFaced', 'goalie_shotClockViolationsCommitted',
+                         'goalie_shotClockViolationsDrawn']].astype('int')
 
-    finished_df['shotPct'] = finished_df['goals'] / finished_df['shots']
-    finished_df['shotPct'] = finished_df['shotPct'].round(3)
+        finished_df['shotPct'] = finished_df['goals'] / finished_df['shots']
+        finished_df['shotPct'] = finished_df['shotPct'].round(3)
 
-    finished_df['sogPct'] = finished_df['shotsOnGoal'] / finished_df['shots']
-    finished_df['sogPct'] = finished_df['sogPct'].round(3)
+        finished_df['sogPct'] = finished_df['shotsOnGoal'] / \
+            finished_df['shots']
+        finished_df['sogPct'] = finished_df['sogPct'].round(3)
 
-    finished_df['goalie_savePct'] = finished_df['goalie_goalsAgainst'] / \
-        finished_df['goalie_shotsFaced']
-    finished_df['goalie_savePct'] = finished_df['goalie_savePct'].round(3)
+        finished_df['goalie_savePct'] = finished_df['goalie_goalsAgainst'] / \
+            finished_df['goalie_shotsFaced']
+        finished_df['goalie_savePct'] = finished_df['goalie_savePct'].round(3)
 
-    return finished_df
+        return finished_df
+    else:
+        print(f'No lacrosse stats found in {season}.')
+        return pd.DataFrame()

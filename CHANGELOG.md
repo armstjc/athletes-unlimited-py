@@ -1,5 +1,13 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.6 The "Bug Fixes" Update
+
+- Fixed a bug in `get_au_lacrosse_season_pbp()` where the notification on which game the function is downloading would be inaccurate.
+- Fixed a bug in `get_au_softball_season_pbp()` where the notification on which game the function is downloading would be inaccurate.
+- Fixed a bug in `get_aux_softball_season_pbp()` where the notification on which game the function is downloading would be inaccurate.
+- Fixed a bug in `get_aux_basketball_season_pbp()` where the notification on which game the function is downloading would be inaccurate.
+- Updated package version to `0.0.6`.
+
 ## 0.0.5 The "Volleyball season stats" Update
 
 - Implemented `get_au_volleyball_season_player_stats()`, a function that returns the season stats of players given a valid Athletes Unlimited (AU) volleyball season.
