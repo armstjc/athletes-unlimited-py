@@ -545,64 +545,69 @@ def get_au_volleyball_season_player_stats(season: int) -> pd.DataFrame():
     #    'total_reception_attempts', 'reception_errors',
     #    'positive_reception_pct', 'digs', 'digs_per_set', 'blocks',
     #    'blocks_per_set', 'au_total_points']
+    if len(game_stats_df) > 0:
 
-    game_stats_df.loc[game_stats_df['sets_played'] > 0, 'G'] = 1
+        game_stats_df.loc[game_stats_df['sets_played'] > 0, 'G'] = 1
 
-    finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'playerId',
-                                         'first_name', 'last_name', 'full_name'], as_index=False)[[
-                                             'G', 'sets_played', 'kills',
-                                             'attack_errors', 'attack_attempts',
-                                             'assists', 'setting_errors',
-                                             'service_errors', 'service_aces',
-                                             'total_reception_attempts', 'reception_errors',
-                                             'digs', 'blocks',
-                                             'au_total_points']].sum()
+        finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'playerId',
+                                            'first_name', 'last_name', 'full_name'], as_index=False)[[
+                                                'G', 'sets_played', 'kills',
+                                                'attack_errors', 'attack_attempts',
+                                                'assists', 'setting_errors',
+                                                'service_errors', 'service_aces',
+                                                'total_reception_attempts', 'reception_errors',
+                                                'digs', 'blocks',
+                                                'au_total_points']].sum()
 
-    finished_df[['G', 'sets_played', 'kills',
-                 'attack_errors', 'attack_attempts',
-                 'assists', 'setting_errors',
-                 'service_errors', 'service_aces',
-                 'total_reception_attempts', 'reception_errors',
-                 'digs', 'blocks',
-                 'au_total_points']] = finished_df[['G', 'sets_played', 'kills',
-                                                    'attack_errors', 'attack_attempts',
-                                                    'assists', 'setting_errors',
-                                                    'service_errors', 'service_aces',
-                                                    'total_reception_attempts', 'reception_errors',
-                                                    'digs', 'blocks',
-                                                    'au_total_points']].astype('int')
+        finished_df[['G', 'sets_played', 'kills',
+                    'attack_errors', 'attack_attempts',
+                     'assists', 'setting_errors',
+                     'service_errors', 'service_aces',
+                     'total_reception_attempts', 'reception_errors',
+                     'digs', 'blocks',
+                     'au_total_points']] = finished_df[['G', 'sets_played', 'kills',
+                                                       'attack_errors', 'attack_attempts',
+                                                        'assists', 'setting_errors',
+                                                        'service_errors', 'service_aces',
+                                                        'total_reception_attempts', 'reception_errors',
+                                                        'digs', 'blocks',
+                                                        'au_total_points']].astype('int')
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'kills_per_set'] = (
-        finished_df['kills']) / finished_df['sets_played']
-    finished_df['kills_per_set'] = finished_df['kills_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'kills_per_set'] = (
+            finished_df['kills']) / finished_df['sets_played']
+        finished_df['kills_per_set'] = finished_df['kills_per_set'].round(3)
 
-    finished_df.loc[finished_df['attack_attempts'] > 0, 'attack_percentage'] = (
-        finished_df['kills'] - finished_df['attack_errors']) / finished_df['attack_attempts']
-    finished_df['attack_percentage'] = finished_df['attack_percentage'].round(
-        3)
+        finished_df.loc[finished_df['attack_attempts'] > 0, 'attack_percentage'] = (
+            finished_df['kills'] - finished_df['attack_errors']) / finished_df['attack_attempts']
+        finished_df['attack_percentage'] = finished_df['attack_percentage'].round(
+            3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'assists_per_set'] = (
-        finished_df['assists']) / finished_df['sets_played']
-    finished_df['assists_per_set'] = finished_df['assists_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'assists_per_set'] = (
+            finished_df['assists']) / finished_df['sets_played']
+        finished_df['assists_per_set'] = finished_df['assists_per_set'].round(
+            3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'service_aces_per_set'] = (
-        finished_df['service_aces']) / finished_df['sets_played']
-    finished_df['service_aces_per_set'] = finished_df['service_aces_per_set'].round(
-        3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'service_aces_per_set'] = (
+            finished_df['service_aces']) / finished_df['sets_played']
+        finished_df['service_aces_per_set'] = finished_df['service_aces_per_set'].round(
+            3)
 
-    # finished_df['positive_reception_pct'] = 0
-    # finished_df['positive_reception_pct'] = finished_df['positive_reception_pct'].round(
-    #     3)
+        # finished_df['positive_reception_pct'] = 0
+        # finished_df['positive_reception_pct'] = finished_df['positive_reception_pct'].round(
+        #     3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'digs_per_set'] = (
-        finished_df['digs']) / finished_df['sets_played']
-    finished_df['digs_per_set'] = finished_df['digs_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'digs_per_set'] = (
+            finished_df['digs']) / finished_df['sets_played']
+        finished_df['digs_per_set'] = finished_df['digs_per_set'].round(3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'blocks_per_set'] = (
-        finished_df['blocks']) / finished_df['sets_played']
-    finished_df['blocks_per_set'] = finished_df['blocks_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'blocks_per_set'] = (
+            finished_df['blocks']) / finished_df['sets_played']
+        finished_df['blocks_per_set'] = finished_df['blocks_per_set'].round(3)
 
-    return finished_df
+        return finished_df
+    else:
+        print(f'No AU volleyball stats found so far in {season}')
+        return pd.DataFrame()
 
 
 def get_au_volleyball_season_team_stats(season: int) -> pd.DataFrame():
@@ -632,59 +637,66 @@ def get_au_volleyball_season_team_stats(season: int) -> pd.DataFrame():
     #    'total_reception_attempts', 'reception_errors',
     #    'positive_reception_pct', 'digs', 'digs_per_set', 'blocks',
     #    'blocks_per_set', 'au_total_points']
-    game_stats_df['G'] = 1
 
-    finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'team_id'], as_index=False)[[
-        'G', 'sets_played', 'kills',
-        'attack_errors', 'attack_attempts',
-        'assists', 'setting_errors',
-        'service_errors', 'service_aces',
-        'total_reception_attempts', 'reception_errors',
-        'digs', 'blocks',
-        'au_total_points']].sum()
+    if len(game_stats_df) > 0:
 
-    finished_df[['G', 'sets_played', 'kills',
-                 'attack_errors', 'attack_attempts',
-                 'assists', 'setting_errors',
-                 'service_errors', 'service_aces',
-                 'total_reception_attempts', 'reception_errors',
-                 'digs', 'blocks',
-                 'au_total_points']] = finished_df[['G', 'sets_played', 'kills',
-                                                    'attack_errors', 'attack_attempts',
-                                                    'assists', 'setting_errors',
-                                                    'service_errors', 'service_aces',
-                                                    'total_reception_attempts', 'reception_errors',
-                                                    'digs', 'blocks',
-                                                    'au_total_points']].astype('int')
+        game_stats_df['G'] = 1
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'kills_per_set'] = (
-        finished_df['kills']) / finished_df['sets_played']
-    finished_df['kills_per_set'] = finished_df['kills_per_set'].round(3)
+        finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'team_id'], as_index=False)[[
+            'G', 'sets_played', 'kills',
+            'attack_errors', 'attack_attempts',
+            'assists', 'setting_errors',
+            'service_errors', 'service_aces',
+            'total_reception_attempts', 'reception_errors',
+            'digs', 'blocks',
+            'au_total_points']].sum()
 
-    finished_df.loc[finished_df['attack_attempts'] > 0, 'attack_percentage'] = (
-        finished_df['kills'] - finished_df['attack_errors']) / finished_df['attack_attempts']
-    finished_df['attack_percentage'] = finished_df['attack_percentage'].round(
-        3)
+        finished_df[['G', 'sets_played', 'kills',
+                    'attack_errors', 'attack_attempts',
+                     'assists', 'setting_errors',
+                     'service_errors', 'service_aces',
+                     'total_reception_attempts', 'reception_errors',
+                     'digs', 'blocks',
+                     'au_total_points']] = finished_df[['G', 'sets_played', 'kills',
+                                                       'attack_errors', 'attack_attempts',
+                                                        'assists', 'setting_errors',
+                                                        'service_errors', 'service_aces',
+                                                        'total_reception_attempts', 'reception_errors',
+                                                        'digs', 'blocks',
+                                                        'au_total_points']].astype('int')
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'assists_per_set'] = (
-        finished_df['assists']) / finished_df['sets_played']
-    finished_df['assists_per_set'] = finished_df['assists_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'kills_per_set'] = (
+            finished_df['kills']) / finished_df['sets_played']
+        finished_df['kills_per_set'] = finished_df['kills_per_set'].round(3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'service_aces_per_set'] = (
-        finished_df['service_aces']) / finished_df['sets_played']
-    finished_df['service_aces_per_set'] = finished_df['service_aces_per_set'].round(
-        3)
+        finished_df.loc[finished_df['attack_attempts'] > 0, 'attack_percentage'] = (
+            finished_df['kills'] - finished_df['attack_errors']) / finished_df['attack_attempts']
+        finished_df['attack_percentage'] = finished_df['attack_percentage'].round(
+            3)
 
-    # finished_df['positive_reception_pct'] = 0
-    # finished_df['positive_reception_pct'] = finished_df['positive_reception_pct'].round(
-    #     3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'assists_per_set'] = (
+            finished_df['assists']) / finished_df['sets_played']
+        finished_df['assists_per_set'] = finished_df['assists_per_set'].round(
+            3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'digs_per_set'] = (
-        finished_df['digs']) / finished_df['sets_played']
-    finished_df['digs_per_set'] = finished_df['digs_per_set'].round(3)
+        finished_df.loc[finished_df['sets_played'] > 0, 'service_aces_per_set'] = (
+            finished_df['service_aces']) / finished_df['sets_played']
+        finished_df['service_aces_per_set'] = finished_df['service_aces_per_set'].round(
+            3)
 
-    finished_df.loc[finished_df['sets_played'] > 0, 'blocks_per_set'] = (
-        finished_df['blocks']) / finished_df['sets_played']
-    finished_df['blocks_per_set'] = finished_df['blocks_per_set'].round(3)
+        # finished_df['positive_reception_pct'] = 0
+        # finished_df['positive_reception_pct'] = finished_df['positive_reception_pct'].round(
+        #     3)
 
-    return finished_df
+        finished_df.loc[finished_df['sets_played'] > 0, 'digs_per_set'] = (
+            finished_df['digs']) / finished_df['sets_played']
+        finished_df['digs_per_set'] = finished_df['digs_per_set'].round(3)
+
+        finished_df.loc[finished_df['sets_played'] > 0, 'blocks_per_set'] = (
+            finished_df['blocks']) / finished_df['sets_played']
+        finished_df['blocks_per_set'] = finished_df['blocks_per_set'].round(3)
+
+        return finished_df
+    else:
+        print(f'No AU volleyball stats found so far in {season}')
+        return pd.DataFrame()

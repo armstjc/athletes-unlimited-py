@@ -1,5 +1,11 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.7 The "Bug Fixes 2" Update
+
+- Fixed a bug in `get_au_softball_season_player_stats()` and `get_au_softball_season_team_stats()` which would cause an unhandled exception to be raised when there are no stats in a inputed season, and the season inputed has a valid season ID.
+- Fixed a bug in `get_au_volleyball_season_player_stats()` and `get_au_volleyball_season_team_stats()` which would cause an unhandled exception to be raised when there are no stats in a inputed season, and the season inputed has a valid season ID.
+- Updated package version to `0.0.7`.
+
 ## 0.0.6a1 The "AUX minor fixes" Update
 
 - Fixed a bug in `get_aux_softball_season_player_stats()` and `get_aux_softball_season_team_stats()` which would cause an unhandled exception to be raised when there are no stats in a inputed season, and the season inputed has a valid season ID.
