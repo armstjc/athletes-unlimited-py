@@ -4,7 +4,7 @@ Python package for the Athletes Unlimited sports organization, and for the vario
 
 ## How to install
 
-This package is is advalible through the `pip` package manager, and can be installed through one of the following commands in your terminal/shell:
+This package is is available through the `pip` package manager, and can be installed through one of the following commands in your terminal/shell:
 
 ```
 pip install athletes_unlimited_py
