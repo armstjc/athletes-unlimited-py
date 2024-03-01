@@ -1,13 +1,13 @@
 import json
-import time
-from urllib.request import urlopen
 
 import pandas as pd
 import requests
 from tqdm import tqdm
 
-from athetes_unlimited_py.softball import get_au_softball_game_stats, get_au_softball_pbp
-from athetes_unlimited_py.utils import raise_html_status_code
+from athetes_unlimited_py.softball import (
+    get_au_softball_game_stats,
+    get_au_softball_pbp,
+)
 
 
 def get_aux_softball_season_id(season: int) -> int:
@@ -32,16 +32,22 @@ def get_aux_softball_season_id(season: int) -> int:
     elif season == 2023:
         seasonId = 106
         return seasonId
+    elif season == 2023:
+        seasonId = 106
+        return seasonId
+    elif season == 2024:
+        seasonId = 172
+        return seasonId
     else:
         raise ValueError(
-            f'[season] can only be 2022 or 2023 at this time for softball.\nYou entered :\n\t{season}')
+            f'[season] can only be a value betwen 2022 and 2024 at this time for softball.\nYou entered :\n\t{season}')
 
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 def get_aux_softball_season_pbp(season: int) -> pd.DataFrame():
     """
@@ -186,11 +192,11 @@ def get_aux_softball_season_team_box(season: int) -> pd.DataFrame():
 
     return season_stats_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Stats
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_aux_softball_season_player_stats(season: int) -> pd.DataFrame():
@@ -208,25 +214,6 @@ def get_aux_softball_season_player_stats(season: int) -> pd.DataFrame():
 
     """
     game_stats_df = get_aux_softball_season_player_box(season)
-    # ['sport', 'api_version', 'season', 'seasonId', 'weekNumber',
-    #    'gameNumber', 'seasonType', 'playerId', 'uniformNumber',
-    #    'uniformNumberDisplay', 'primaryPositionLk', 'secondaryPositionLk',
-    #    'first_name', 'last_name', 'full_name', 'week', 'game_num',
-    #    'season_type', 'G', 'GS', 'batting_PA', 'batting_AB', 'batting_R',
-    #    'batting_H', 'batting_2B', 'batting_3B', 'batting_HR', 'batting_RBI',
-    #    'batting_BB', 'batting_HBP', 'batting_K', 'batting_SB', 'batting_SBA',
-    #    'batting_CS', 'batting_BA', 'batting_OBP', 'batting_SLG', 'batting_TB',
-    #    'batting_SF', 'batting_SH', 'AU_POINTS', 'pitching_W', 'pitching_L',
-    #    'pitching_ERA', 'pitching_SHO', 'pitching_CG', 'pitching_SV',
-    #    'pitching_IP_str', 'pitching_IP', 'pitching_H', 'pitching_R',
-    #    'pitching_ER', 'pitching_HR', 'pitching_BB', 'pitching_SO',
-    #    'pitching_HBP', 'pitching_WP', 'pitching_WHIP', 'pitching_H9',
-    #    'pitching_HR9', 'pitching_BB9', 'pitching_SO9', 'pitching_SO/BB',
-    #    'pitching_RA9', 'pitching_PI', 'pitching_PI_balls',
-    #    'pitching_PI_strikes', 'fielding_position', 'fielding_IP_str',
-    #    'fielding_IP', 'fielding_PO', 'fielding_A', 'fielding_E', 'fielding_DP',
-    #    'fielding_FLD%', 'fielding_CS', 'fielding_CS%', 'fielding_TC',
-    #    'fielding_CH', 'fielding_RF/9']
 
     if len(game_stats_df) > 0:
         finished_df = game_stats_df.groupby(['sport', 'season', 'seasonId', 'playerId',
@@ -245,7 +232,10 @@ def get_aux_softball_season_player_stats(season: int) -> pd.DataFrame():
                                                  'fielding_CS', 'fielding_TC'
                                              ]].sum()
 
-        finished_df[['G', 'GS', 'AU_POINTS', 'batting_PA', 'batting_AB', 'batting_R', 'batting_H', 'batting_2B', 'batting_3B', 'batting_HR', 'batting_RBI', 'batting_BB', 'batting_HBP', 'batting_K', 'batting_SB', 'batting_SBA', 'batting_CS', 'batting_TB', 'batting_SF', 'batting_SH', 'pitching_W', 'pitching_L', 'pitching_SHO', 'pitching_CG', 'pitching_QS', 'pitching_SV', 'pitching_H', 'pitching_R', 'pitching_ER', 'pitching_HR', 'pitching_BB', 'pitching_SO', 'pitching_HBP', 'pitching_WP', 'pitching_PI', 'pitching_PI_balls', 'pitching_PI_strikes', 'fielding_IP', 'fielding_PO', 'fielding_A', 'fielding_E', 'fielding_DP', 'fielding_CS', 'fielding_TC']] = finished_df[[
+        finished_df[[
+            'G',
+            'GS',
+            'AU_POINTS', 'batting_PA', 'batting_AB', 'batting_R', 'batting_H', 'batting_2B', 'batting_3B', 'batting_HR', 'batting_RBI', 'batting_BB', 'batting_HBP', 'batting_K', 'batting_SB', 'batting_SBA', 'batting_CS', 'batting_TB', 'batting_SF', 'batting_SH', 'pitching_W', 'pitching_L', 'pitching_SHO', 'pitching_CG', 'pitching_QS', 'pitching_SV', 'pitching_H', 'pitching_R', 'pitching_ER', 'pitching_HR', 'pitching_BB', 'pitching_SO', 'pitching_HBP', 'pitching_WP', 'pitching_PI', 'pitching_PI_balls', 'pitching_PI_strikes', 'fielding_IP', 'fielding_PO', 'fielding_A', 'fielding_E', 'fielding_DP', 'fielding_CS', 'fielding_TC']] = finished_df[[
             'G', 'GS', 'AU_POINTS', 'batting_PA', 'batting_AB', 'batting_R', 'batting_H', 'batting_2B', 'batting_3B', 'batting_HR', 'batting_RBI', 'batting_BB', 'batting_HBP', 'batting_K', 'batting_SB', 'batting_SBA', 'batting_CS', 'batting_TB', 'batting_SF', 'batting_SH', 'pitching_W', 'pitching_L', 'pitching_SHO', 'pitching_CG', 'pitching_QS', 'pitching_SV', 'pitching_H', 'pitching_R', 'pitching_ER', 'pitching_HR', 'pitching_BB', 'pitching_SO', 'pitching_HBP', 'pitching_WP', 'pitching_PI', 'pitching_PI_balls', 'pitching_PI_strikes', 'fielding_IP', 'fielding_PO', 'fielding_A', 'fielding_E', 'fielding_DP', 'fielding_CS', 'fielding_TC']].astype('int')
         finished_df['pitching_IP'] = finished_df['pitching_IP'].astype('float')
         # Batting

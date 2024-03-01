@@ -8,11 +8,11 @@ from tqdm import tqdm
 
 from athetes_unlimited_py.utils import raise_html_status_code
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Softball-only utilities
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_softball_season(season_id: int) -> int:
@@ -49,24 +49,32 @@ def get_au_softball_season(season_id: int) -> int:
     elif season_id == 106:
         season = 2023
         return season
+    elif season_id == 172:
+        season = 2024
+        return season
     else:
         raise ValueError(
-            f'[season] can only be 2022 or 2023 at this time for softball.\nYou entered :\n\t{season_id}')
+            '[season] can only be 2022 or 2023 at this time for softball.' +
+            f'\nYou entered :\n\t{season_id}'
+        )
 
 
 def get_au_softball_season_id(season: int) -> int:
     """
-    Given a season, `get_au_softball_season_id()` returns the proper season ID for the Athletes Unlimited softball season.
+    Given a season, `get_au_softball_season_id()`
+    returns the proper season ID for the Athletes Unlimited softball season.
 
     Parameters
     ----------
     `season` (int, mandatory):
-        The season you want a season ID for softball. 
-        If there isn't a season ID for the inputted `season`, a `ValueError()` exception will be raised.
+        The season you want a season ID for softball.
+        If there isn't a season ID for the inputted `season`,
+        a `ValueError()` exception will be raised.
 
     Returns
     ----------
-    The proper season ID corresponding to an Athletes Unlimited softball season.
+    The proper season ID corresponding
+    to an Athletes Unlimited softball season.
     """
     seasonId = 0
 
@@ -84,18 +92,25 @@ def get_au_softball_season_id(season: int) -> int:
         return seasonId
     else:
         raise ValueError(
-            f'[season] can only be 2022 or 2023 at this time for softball.\nYou entered :\n\t{season}')
+            '[season] can only be 2022 or 2023 at this time for softball.' +
+            f'\nYou entered :\n\t{season}')
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Game Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
-def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=False, get_player_and_team_stats=False, rename_cols=False) -> pd.DataFrame():
+def get_au_softball_game_stats(
+        season_id: int,
+        game_num: int,
+        get_team_stats: bool = False,
+        get_player_and_team_stats: bool = False,
+        rename_cols: bool = False) -> pd.DataFrame():
     """
-    Retrieves the player and/or team game stats for an Atheltes Unlimited (AU) softball game.
+    Retrieves the player and/or team game stats
+    for an Atheltes Unlimited (AU) softball game.
 
     Parameters
     ----------
@@ -108,20 +123,25 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         A `ValueError` will be raised if `game_num` is set to less than 1.
 
     `get_team_stats` (bool, optional) = False:
-        Optional boolean argument. 
-        If set to `True`, the pandas DataFrame returned by `get_softball_game_stats()` will only return team stats for that game, 
-        and will not return player stats, unless `get_player_and_team_stats` is set to `True` if `get_team_stats` is set to `True`.
+        Optional boolean argument.
+        If set to `True`, the pandas DataFrame returned by
+        `get_softball_game_stats()` will only return team stats for that game,
+        and will not return player stats,
+        unless `get_player_and_team_stats` is set to `True`
+        if `get_team_stats` is set to `True`.
 
     `get_player_and_team_stats` (bool, optional) = False:
 
     `rename_cols` (bool, optional) = False:
         NOT IMPLEMENTED YET!
-        `get_softball_game_stats()` will have no change in functionality at this time if `rename_cols` is set to `True`.
+        `get_softball_game_stats()` will have no change
+        in functionality at this time if `rename_cols` is set to `True`.
 
 
     Returns
     ----------
-    A pandas DataFrame containing player and/or team stats for a given AU game within a given AU season ID.
+    A pandas DataFrame containing player and/or team stats
+    for a given AU game within a given AU season ID.
     """
 
     headers = {
@@ -139,7 +159,8 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
     # Yes, the key is literaly the int of the Epoch time at the time of the GET request.
     key = int(time.time())
 
-    url = f"https://auprosports.com/proxy.php?request=/api/stats/softball/v1/{season_id}/by-game/{game_num}?statType=batting%26statType=pitching%26statType=fielding%26k={key}"
+    url = f"https://auprosports.com/proxy.php?request=/api/stats/softball/v1/{season_id}/by-game/{
+        game_num}?statType=batting%26statType=pitching%26statType=fielding%26k={key}"
 
     response = requests.get(url, headers=headers)
     raise_html_status_code(response.status_code)
@@ -153,9 +174,9 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df = pd.DataFrame(
             {'sport': sport, 'api_version': api_version}, index=[0])
 
-        ##############################################################################################################################
+        ###################################################################
         # Player/Team info
-        ##############################################################################################################################
+        ###################################################################
         season = get_au_softball_season(i['seasonId'])
         row_df['season'] = season
         row_df['seasonId'] = i['seasonId']
@@ -174,14 +195,14 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df['full_name'] = f"{i['firstName']} {i['lastName']}".replace(
             '\u2019', '\'')
 
-        ##############################################################################################################################
+        ###################################################################
         # Catching Stats
         # An endpoint sugests that this is a thing in their API, but no data can be found here.
-        ##############################################################################################################################
+        ###################################################################
 
-        ##############################################################################################################################
+        ###################################################################
         # Batting Stats
-        ##############################################################################################################################
+        ###################################################################
         if len(i['battingStats']) > 0:
             row_df['week'] = i['battingStats'][0]['weekNumber']
             row_df['game_num'] = i['battingStats'][0]['gameNumber']
@@ -234,9 +255,9 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
             row_df['batting_SF'] = None
             row_df['batting_SH'] = None
 
-        ##############################################################################################################################
+        ###################################################################
         # Pitching Stats
-        ##############################################################################################################################
+        ###################################################################
 
         if len(i['pitchingStats']) > 0:
             row_df['week'] = i['pitchingStats'][0]['weekNumber']
@@ -310,9 +331,9 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
             row_df['pitching_PI_balls'] = None
             row_df['pitching_PI_strikes'] = None
 
-        ##############################################################################################################################
+        ###################################################################
         # Fielding Stats
-        ##############################################################################################################################
+        ###################################################################
         if len(i['fieldingStats']) > 0:
             row_df['week'] = i['fieldingStats'][0]['weekNumber']
             row_df['game_num'] = i['fieldingStats'][0]['gameNumber']
@@ -356,9 +377,9 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
             row_df['fielding_CH'] = None
             row_df['fielding_RF/9'] = None
 
-        ##############################################################################################################################
+        ###################################################################
         # Save the data to the correct DataFrame
-        ##############################################################################################################################
+        ###################################################################
 
         row_df['type'] = i['type']
         row_df['teamId'] = i['teamId']
@@ -381,9 +402,9 @@ def get_au_softball_game_stats(season_id: int, game_num: int, get_team_stats=Fal
             player_stats_df['GS'] == 1) & (player_stats_df['pitching_ER'] <= 3), 'pitching_QS'] = 1
     except:
         print('No pitching stats found in this game.')
-    ##############################################################################################################################
+    ###################################################################
     # Once we're done, return the correct dataframe.
-    ##############################################################################################################################
+    ###################################################################
 
     if get_player_and_team_stats == True:
         stats_df = pd.concat(
@@ -435,7 +456,8 @@ def get_au_softball_pbp(season_id: int, game_id: int, return_participation_data=
 
     # Yes, the key is literaly the int of the Epoch time at the time of the GET request.
     key = int(time.time())
-    url = f"https://auprosports.com/proxy.php?request=/api/play-by-play/softball/v1/event/{season_id}/game/{game_id}?k={key}"
+    url = f"https://auprosports.com/proxy.php?request=/api/play-by-play/softball/v1/event/{
+        season_id}/game/{game_id}?k={key}"
 
     response = requests.get(url, headers=headers)
     raise_html_status_code(response.status_code)
@@ -520,11 +542,11 @@ def get_au_softball_pbp(season_id: int, game_id: int, return_participation_data=
         del json_data, roster_df
         return game_pbp_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_softball_season_pbp(season: int) -> pd.DataFrame():
@@ -667,11 +689,11 @@ def get_au_softball_season_team_box(season: int) -> pd.DataFrame():
 
     return season_stats_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Stats
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_softball_season_player_stats(season: int) -> pd.DataFrame():

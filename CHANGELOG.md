@@ -1,5 +1,10 @@
 # CHANGELOG : athletes-unlimited-py
 
+## 0.0.8 The "2024 sports" update
+- Added 2024 season codes to softball and basketball.
+- Minor formatting changes to the code/package.
+- Updated package version to `0.0.8`.
+
 ## 0.0.7 The "Bug Fixes 2" Update
 
 - Fixed a bug in `get_au_softball_season_player_stats()` and `get_au_softball_season_team_stats()` which would cause an unhandled exception to be raised when there are no stats in a inputed season, and the season inputed has a valid season ID.

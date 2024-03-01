@@ -8,11 +8,11 @@ from tqdm import tqdm
 
 from athetes_unlimited_py.utils import raise_html_status_code
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Basketball-only utilities
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_basketball_season(season_id: int) -> int:
@@ -36,6 +36,9 @@ def get_au_basketball_season(season_id: int) -> int:
         return season
     elif season_id == 73:
         season = 2023
+        return season
+    elif season_id == 171:
+        season = 2024
         return season
     else:
         raise ValueError(
@@ -64,15 +67,18 @@ def get_au_basketball_season_id(season: int) -> int:
     elif season == 2023:
         seasonId = 73
         return seasonId
+    elif season == 2024:
+        seasonId = 171
+        return seasonId
     else:
         raise ValueError(
-            f'[season] can only be 2022 or 2023 at this time for basketball.\nYou entered :\n\t{season}')
+            f'[season] can only be a value between 2022 and 2024 at this time for basketball.\nYou entered :\n\t{season}')
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Game Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=False, get_player_and_team_stats=False, rename_cols=False) -> pd.DataFrame():
@@ -120,7 +126,8 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
     # Yes, the key is literaly the int of the Epoch time at the time of the GET request.
     key = int(time.time())
 
-    url = f"https://auprosports.com/proxy.php?request=/api/stats/basketball/v1/{season_id}/by-game/{game_num}?statType=basketball%26k={key}"
+    url = f"https://auprosports.com/proxy.php?request=/api/stats/basketball/v1/{
+        season_id}/by-game/{game_num}?statType=basketball%26k={key}"
 
     response = requests.get(url, headers=headers)
     raise_html_status_code(response.status_code)
@@ -144,9 +151,9 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
         else:
             row_df['homeTeamFlg'] = 0
 
-        ##############################################################################################################################
+        ###################################################################
         # Player/Team info
-        ##############################################################################################################################
+        ###################################################################
         row_df['season'] = get_au_basketball_season(i['seasonId'])
         row_df['season_id'] = i['seasonId']
         row_df['week_number'] = i['stats'][0]['weekNumber']
@@ -164,9 +171,9 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
         row_df['full_name'] = f"{i['firstName']} {i['lastName']}".replace(
             '\u2019', '\'')
 
-        ##############################################################################################################################
+        ###################################################################
         # Game Stats
-        ##############################################################################################################################
+        ###################################################################
 
         row_df['G'] = i['stats'][0]['gamesPlayed']
         row_df['MIN'] = i['stats'][0]['minutesPlayed']
@@ -224,9 +231,9 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
         row_df['GmSc'] = row_df['PTS'] + (0.4 * row_df['FGM']) + (0.7 * row_df['ORB']) + (0.3 * row_df['DRB']) + row_df['STL'] + (0.7 * row_df['AST']) + (
             0.7 * row_df['BLK']) * (0.7 * row_df['FGA']) - (0.4 * (row_df['FTA'] - row_df['FTM'])) - (0.4 * row_df['personalFoulsCommitted']) - row_df['TOV']
 
-        ##############################################################################################################################
+        ###################################################################
         # Save the data to the correct DataFrame
-        ##############################################################################################################################
+        ###################################################################
 
         if i['type'] == "Team":
             team_stats_df = pd.concat(
@@ -237,9 +244,9 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
 
         del row_df
 
-    ##############################################################################################################################
+    ###################################################################
     # Once we're done, return the correct dataframe.
-    ##############################################################################################################################
+    ###################################################################
 
     if get_player_and_team_stats == True:
         stats_df = pd.concat(
@@ -290,7 +297,8 @@ def get_au_basketball_pbp(season: int, game_id: int, return_participation_data=F
 
     # Yes, the key is literaly the int of the Epoch time at the time of the GET request.
     key = int(time.time())
-    url = f"https://auprosports.com/proxy.php?request=/api/play-by-play/basketball/v1/event/{season_id}/game/{game_id}?k={key}"
+    url = f"https://auprosports.com/proxy.php?request=/api/play-by-play/basketball/v1/event/{
+        season_id}/game/{game_id}?k={key}"
 
     response = requests.get(url, headers=headers)
     raise_html_status_code(response.status_code)
@@ -402,11 +410,11 @@ def get_au_basketball_pbp(season: int, game_id: int, return_participation_data=F
         del json_data, roster_df
         return game_pbp_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_basketball_season_pbp(season: int) -> pd.DataFrame():
@@ -548,11 +556,11 @@ def get_au_basketball_season_team_box(season: int) -> pd.DataFrame():
 
     return season_stats_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Stats
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_basketball_season_player_stats(season: int) -> pd.DataFrame():
@@ -663,17 +671,19 @@ def get_au_basketball_season_team_stats(season: int) -> pd.DataFrame():
         'tripleDoubles'
     ]].sum()
 
-    finished_df[['G', 'FGM', 'FGA', '3PM', '3PA', '2PM', '2PA',
-                 'FTM', 'FTA', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV',
-                 'PTS', 'AU_PTS', 'shootingFoulsCommitted',
-                 'shootingFoulsDrawn', 'personalFoulsCommitted', 'personalFoulsDrawn',
-                 'offensiveFoulsCommitted', 'offensiveFoulsDrawn', 'doubleDoubles',
-                 'tripleDoubles']] = finished_df[['G', 'FGM', 'FGA', '3PM', '3PA', '2PM', '2PA',
-                                                  'FTM', 'FTA', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV',
-                                                  'PTS', 'AU_PTS', 'shootingFoulsCommitted',
-                                                  'shootingFoulsDrawn', 'personalFoulsCommitted', 'personalFoulsDrawn',
-                                                  'offensiveFoulsCommitted', 'offensiveFoulsDrawn', 'doubleDoubles',
-                                                  'tripleDoubles']].astype('int')
+    finished_df[[
+        'G',
+        'FGM', 'FGA', '3PM', '3PA', '2PM', '2PA',
+        'FTM', 'FTA', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV',
+        'PTS', 'AU_PTS', 'shootingFoulsCommitted',
+        'shootingFoulsDrawn', 'personalFoulsCommitted', 'personalFoulsDrawn',
+        'offensiveFoulsCommitted', 'offensiveFoulsDrawn', 'doubleDoubles',
+        'tripleDoubles']] = finished_df[['G', 'FGM', 'FGA', '3PM', '3PA', '2PM', '2PA',
+                                         'FTM', 'FTA', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV',
+                                         'PTS', 'AU_PTS', 'shootingFoulsCommitted',
+                                         'shootingFoulsDrawn', 'personalFoulsCommitted', 'personalFoulsDrawn',
+                                         'offensiveFoulsCommitted', 'offensiveFoulsDrawn', 'doubleDoubles',
+                                         'tripleDoubles']].astype('int')
 
     finished_df.loc[finished_df['FGA'] > 0,
                     'FG%'] = finished_df['FGM'] / finished_df['FGA']

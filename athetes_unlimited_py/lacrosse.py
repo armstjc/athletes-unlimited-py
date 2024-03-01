@@ -8,11 +8,11 @@ from tqdm import tqdm
 
 from athetes_unlimited_py.utils import raise_html_status_code
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Lacrosse-only utilities
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_lacrosse_season(season_id: int) -> int:
@@ -39,9 +39,13 @@ def get_au_lacrosse_season(season_id: int) -> int:
     elif season_id == 105:
         season = 2023
         return season
+    # TODO: Get a season ID for AU Lacrosse
+    # elif season_id == 105:
+    #     season = 2024
+    #     return season
     else:
         raise ValueError(
-            f'[season_id] can only be for the 2021, 2022, or 2023 lacrosse seasons at this time.\nYou entered :\n\t{season}')
+            f'[season_id] can only be for the 2021-2024 lacrosse seasons at this time.\nYou entered :\n\t{season}')
 
 
 def get_au_lacrosse_season_id(season: int) -> int:
@@ -69,15 +73,19 @@ def get_au_lacrosse_season_id(season: int) -> int:
     elif season == 2023:
         seasonId = 105
         return seasonId
+    # TODO: Get a season ID for AU Lacrosse
+    # elif season == 2024:
+    #     seasonId = 105
+    #     return seasonId
     else:
         raise ValueError(
             f'[season] can only be 2021, 2022, or 2023 at this time for lacrosse.\nYou entered :\n\t{season}')
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Game Functions
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=False, get_player_and_team_stats=False, rename_cols=False) -> pd.DataFrame():
@@ -136,9 +144,9 @@ def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df = pd.DataFrame(
             {'sport': sport, 'api_version': api_version}, index=[0])
 
-        ##############################################################################################################################
+        ###################################################################
         # Player/Team info
-        ##############################################################################################################################
+        ###################################################################
         row_df['season'] = get_au_lacrosse_season(i['seasonId'])
         row_df['seasonId'] = i['seasonId']
         row_df['weekNumber'] = 0
@@ -156,9 +164,9 @@ def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df['full_name'] = f"{i['firstName']} {i['lastName']}".replace(
             '\u2019', '\'')
 
-        ##############################################################################################################################
+        ###################################################################
         # Player/Team stats
-        ##############################################################################################################################
+        ###################################################################
         row_df['periodsPlayed'] = i['playerStats'][0]['periodsPlayed']
         row_df['goals'] = i['playerStats'][0]['goals']
         row_df['assists'] = i['playerStats'][0]['assists']
@@ -182,9 +190,9 @@ def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df['gameNumber'] = i['playerStats'][0]['gameNumber']
         row_df['seasonType'] = i['playerStats'][0]['seasonType']
 
-        ##############################################################################################################################
+        ###################################################################
         # Golie stats
-        ##############################################################################################################################
+        ###################################################################
         row_df['goalie_gamesPlayed'] = i['goalieStats'][0]['gamesPlayed']
         row_df['goalie_gamesStarted'] = i['goalieStats'][0]['gamesStarted']
         row_df['goalie_goalsAgainst'] = i['goalieStats'][0]['goalsAgainst']
@@ -196,9 +204,9 @@ def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=Fal
         row_df['goalie_shotClockViolationsCommitted'] = i['goalieStats'][0]['shotClockViolationsCommitted']
         row_df['goalie_shotClockViolationsDrawn'] = i['goalieStats'][0]['shotClockViolationsDrawn']
 
-        ##############################################################################################################################
+        ###################################################################
         # Save the data to the correct DataFrame
-        ##############################################################################################################################
+        ###################################################################
 
         if i['type'] == "Team":
             team_stats_df = pd.concat(
@@ -217,9 +225,9 @@ def get_au_lacrosse_game_stats(season_id: int, game_num: int, get_team_stats=Fal
 
         del row_df
 
-    ##############################################################################################################################
+    ###################################################################
     # Once we're done, return the correct dataframe.
-    ##############################################################################################################################
+    ###################################################################
 
     if get_player_and_team_stats == True:
         stats_df = pd.concat(
@@ -531,11 +539,11 @@ def get_au_lacrosse_season_team_box(season: int) -> pd.DataFrame():
 
     return season_stats_df
 
-############################################################################################################################################################################################################################################################
+##############################################################################
 ##
 # Season Stats
 ##
-############################################################################################################################################################################################################################################################
+##############################################################################
 
 
 def get_au_lacrosse_season_player_stats(season: int) -> pd.DataFrame():
