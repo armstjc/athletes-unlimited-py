@@ -126,8 +126,7 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
     # Yes, the key is literaly the int of the Epoch time at the time of the GET request.
     key = int(time.time())
 
-    url = f"https://auprosports.com/proxy.php?request=/api/stats/basketball/v1/{
-        season_id}/by-game/{game_num}?statType=basketball%26k={key}"
+    url = f"https://auprosports.com/proxy.php?request=/api/stats/v2/basketball/{season_id}/by-game/{game_num}?statTypes=basketball%26k={key}"
 
     response = requests.get(url, headers=headers)
     raise_html_status_code(response.status_code)
@@ -164,8 +163,16 @@ def get_au_basketball_game_stats(season: int, game_num: int, get_team_stats=Fals
         row_df['uniform_number'] = i['uniformNumber']
         row_df['uniform_number_display'] = str(i['uniformNumberDisplay'])
 
-        row_df['primary_position_lk'] = i['primaryPositionLk']
-        row_df['secondary_position_lk'] = i['secondaryPositionLk']
+        try:
+            row_df['primary_position_lk'] = i['primaryPosition']['positionLk']
+        except:
+            pass
+        
+        try:        
+            row_df['secondary_position_lk'] = i['secondaryPosition']
+        except:
+            pass
+
         row_df['first_name'] = str(i['firstName']).replace('\u2019', '\'')
         row_df['last_name'] = str(i['lastName']).replace('\u2019', '\'')
         row_df['full_name'] = f"{i['firstName']} {i['lastName']}".replace(
@@ -578,7 +585,9 @@ def get_au_basketball_season_player_stats(season: int) -> pd.DataFrame():
 
     """
     game_stats_df = get_au_basketball_season_player_box(season)
-    col_names = ['sport', 'season',
+    col_names = [
+        'sport',
+        'season',
                  'season_id', 'player_id',
                  'first_name', 'last_name', 'full_name', 'G',
                  'MIN', 'FGM', 'FGA', 'FG%', '3PM', '3PA', '3P%', '2PM', '2PA', '2P%',
@@ -588,7 +597,9 @@ def get_au_basketball_season_player_stats(season: int) -> pd.DataFrame():
                  'offensiveFoulsCommitted', 'offensiveFoulsDrawn', 'doubleDoubles',
                  'tripleDoubles']
 
-    finished_df = game_stats_df.groupby(['sport', 'season', 'season_id', 'player_id',
+    finished_df = game_stats_df.groupby([
+        # 'sport',
+        'season', 'season_id', 'player_id',
                                          'first_name', 'last_name', 'full_name'], as_index=False)[[
                                              'G', 'MIN', 'FGM', 'FGA', '3PM', '3PA', '2PM', '2PA',
                                              'FTM', 'FTA', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV',
